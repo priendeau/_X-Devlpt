@@ -36,6 +36,11 @@ class VideoImportHandler( object ):
   vsF                = None
   DisplayBufferList  = list()
   DisplayBufferLineLength = None
+  ShowModule         = None
+  ShowModuleAttr     = None
+  ShowModuleAttrDisplay   = None
+  VideoHandler       = None
+  
 
   GetterAssociatedName={ 'no' :{ 'pattern':[0,'no','get_frame_no','frame_no'] ,   'attr':('get_frame_no')     },
                          'pts':{ 'pattern':[1,'pts','get_frame_pts','frame_pts'] ,'attr':('get_frame_at_pts') },
@@ -121,11 +126,14 @@ class VideoImportHandler( object ):
 
   def GetShow( self ):
     CurrentFrame=self.PropertyFrame
-    return Image.fromstring( CurrentFrame.frame_mode, CurrentFrame.size, CurrentFrame.data ).show( )
+    """
+      This normally query Image.fromstring, or VideoHandler.fromstring
+    """
+    return getattr( getattr( self.VideoHandler, self.ShowModuleAttr )( CurrentFrame.frame_mode, CurrentFrame.size, CurrentFrame.data ), self.ShowModuleAttrDisplay )()
 
   def SetShow( self, value ):
     print "\t[ Set Display Frame engine ]"
-    self.PropertyFrame = value
+    self.ShowModule, self.ShowModuleAttrLoad, self.ShowModuleAttrDisplay  = value 
 
   PropertyShow=property( GetShow, SetShow )
 
@@ -205,12 +213,18 @@ class VideoImportObject( object ):
     print "Video Frame-Resized Handler[ %s ]" % ( self.Main.vsF )
     self.Main.PropertyVideoAlias = 'vs'
     print "Video Alias: %s" % ( self.Main.PropertyVideoAlias )
+
     self.Main.PropertyLoad
+    """
+      There is a lot of work behind Property-amalgam and C++, templating in effort to
+      make common trait type and value for trait type... 
+    """
     self.Main.PropertyFrame='vs', 'get_frame_sec', 36
+    self.Main.PropertyShow= 'VideoHandler', 'fromstring', 'show'
     
 
 if __name__.__eq__( '__main__' ):
   StrStreamFileNameTest='/media/COMST500GB/temp/349FED09d01_under_water.flv'
   testVideo=VideoImportObject( StrStreamFileName=StrStreamFileNameTest ,
                                VidImportFrameSize=( 640, 480 ),
-                               FrameMode='RGB' )
+                               FrameMode='RGB', VideoHandler=Image )
