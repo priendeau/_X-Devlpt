@@ -4,7 +4,7 @@ from ffvideo import VideoStream
 import pynav
 from pynav import Pynav 
 from PIL import Image
-
+import tempfile
 
 """
   Une promesse pour M.Couture( alias, <X> in near future ) de faire un wavelet sur un ensemble d'image pour
@@ -193,6 +193,15 @@ class VideoImportHandler( object ):
   def GetLoad( self ):
     return self.print_info( )
 
+  def SetLoaderMeth( self, value, KeyTest ):
+    if value == 'Pynav':
+      print "Url Method detection within FileName Calling."
+      self.UrlHandler=pynav.Pynav()
+      self.TempUrl=tempfile.NamedTemporaryFile( 'w+', -1, 'PilVideo', 'temp', None, False )
+      self.TempUrl.file.write( self.UrlHandler.go( getattr( self, KeyTest ) ) )
+      setattr( self, KeyTest, TempUrl.name )
+      self.TempUrl.file.close()
+      
   def SetLoad( self, value ):
     print "\t[ Set Loader ]"
     if len(value) == 1:
@@ -201,8 +210,19 @@ class VideoImportHandler( object ):
       self.LoadFileName, self.VidImportFrameSize = value
     if len(value) == 3:
       self.LoadFileName, self.VidImportFrameSize, self.FrameMode = value
-      self.vsF  = VideoStream( self.StrStreamFileName, frame_size=self.VidImportFrameSize , frame_mode=self.FrameMode )
-    self.vs = VideoStream( self.LoadFileName ) 
+
+    for ItemRegExpTest in self.GetterAssociatedName['re'].keys():
+      for ItemRegPerList in self.GetterAssociatedName['re'][ItemRegExpTest]['pattern']:
+        RegExpTestHandler=ItemRegPerList
+        print "Filtering with Pattern: %s:< %s ; %s >" % ( RegExpTestHandler,self.StrStreamFileName , self.LoadFileName )
+        if RegExpTestHandler.match( self.StrStreamFileName ):
+          self.SetLoaderMeth( self.GetterAssociatedName['re'][ItemRegExpTest]['attr'], 'StrStreamFileName' )
+          self.vsF  = VideoStream( self.StrStreamFileName, frame_size=self.VidImportFrameSize , frame_mode=self.FrameMode )
+        if RegExpTestHandler.match( self.LoadFileName ):
+          self.SetLoaderMeth( self.GetterAssociatedName['re'][ItemRegExpTest]['attr'], 'LoadFileName' )
+          self.vs = VideoStream( self.LoadFileName ) 
+        
+      
     
   PropertyLoad=property( GetLoad, SetLoad )
 
