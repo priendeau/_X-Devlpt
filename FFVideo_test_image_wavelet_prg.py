@@ -1,5 +1,8 @@
 ﻿import ffvideo
+import os, sys, re
 from ffvideo import VideoStream
+import pynav
+from pynav import Pynav 
 from PIL import Image
 
 
@@ -42,9 +45,13 @@ class VideoImportHandler( object ):
   VideoHandler       = None
   
 
-  GetterAssociatedName={ 'no' :{ 'pattern':[0,'no','get_frame_no','frame_no'] ,   'attr':('get_frame_no')     },
-                         'pts':{ 'pattern':[1,'pts','get_frame_pts','frame_pts'] ,'attr':('get_frame_at_pts') },
-                         'sec':{ 'pattern':[2,'sec','get_frame_sec','frame_sec'] ,'attr':('get_frame_at_sec') } }
+  GetterAssociatedName={ 'VideoStream':{
+            'no' :{ 'pattern':[0,'no','get_frame_no','frame_no'] ,   'attr':('get_frame_no')     },
+            'pts':{ 'pattern':[1,'pts','get_frame_pts','frame_pts'] ,'attr':('get_frame_at_pts') },
+            'sec':{ 'pattern':[2,'sec','get_frame_sec','frame_sec'] ,'attr':('get_frame_at_sec') } },
+                         're':{
+            'file':{ 'pattern':[re.compile(r'(?ui)(/|[a-zA-Z]:)')], 'attr':('open') },
+            'url':{ 'pattern':[re.compile(r'(?ui)(http://|url://)')], 'attr':('Pynav') } } }
 
   DictDisplay={
     1:{ 'display':('Codec           : %s'),   'attr':['codec_name' ], 'type':('str') },
@@ -56,6 +63,11 @@ class VideoImportHandler( object ):
     7:{ 'display':('Frame_mode      : %s'),   'attr':['frame_mode' ], 'type':('str') },
     8:{ 'display':('Frame scale     : %s'),   'attr':['scale_mode' ], 'type':('str') } } 
 
+  class VideoImportHandlerError( Exception ):
+    MsgShow='Error Occur:\n'
+    def __init__(self, value):
+      Exception.__init__( self, self.MsgShow % ( value ) )
+    
   class VideoImportHandlerFrameQueryWarning( Warning ):
     MsgShow='Can not understand what is this type of FrameQuery : %s'
     def __init__(self, value):
@@ -76,33 +88,43 @@ class VideoImportHandler( object ):
 
   PropertyVideoAlias=property( GetVideoAlias , SetVideoAlias )
 
-  def SetFrameIndexCurrentTest( self, value, identityTest='len' ):
+  def SetFrameIndexCurrentTest( self, value, identityTest='len', DefaultAttr = 'get_frame_at_sec' ):
     self.CurrentTest=getattr( __builtins__, identityTest )( value )
+    print "Set Frame provide %d argument." % ( self.CurrentTest )
     if self.CurrentTest == 1:
+      """
+        Only attribuying only the time sequence by unit of ( get_frame_at_sec ) to Property.
+      """
       self.CurrentVideoAlias=self.PropertyVideoAlias
       self.FrameName, self.FrameGetterName, self.StatementCanQuery=value, DefaultAttr, True
 
     if self.CurrentTest == 2:
-      self.CurrentPropertyVideoAlias, self.FrameName = value
+      """
+        Only attribuying only the time sequence and VideoAlias
+      """
+      self.FrameName, self.CurrentPropertyVideoAlias = value
       self.PropertyVideoAlias = self.CurrentPropertyVideoAlias
       self.FrameGetterName, self.StatementCanQuery = DefaultAttr, True
 
     if self.CurrentTest == 3:
-      self.CurrentPropertyVideoAlias, self.GetterNameQuery ,self.FrameName = value 
-      self.PropertyVideoAlias = self.CurrentPropertyVideoAlias 
+      """
+        Only attribuying only the time sequence, VideoAlias and the Attribute of Unit Query
+      """
+      self.FrameName, self.CurrentPropertyVideoAlias, self.GetterNameQuery , = value 
+      self.PropertyVideoAlias, self.StatementCanQuery = self.CurrentPropertyVideoAlias , True
       self.StatementGetterResidute=1
 
-  def SetFrameIndexValue( self, value, DefaultAttr = 'get_frame_at_sec' ):
+  def SetFrameIndexValue( self, value ):
     self.CurrentPropertyVideoAlias=None
     self.SetFrameIndexCurrentTest( value )
     
-  def SetFrameQueryAttr( self , DefaultGroupTest=['no','pts','sec'], defaultItemKey='pattern', defaultAttrKey='attr' ):
+  def SetFrameQueryAttr( self , KeyMain='VideoStream', DefaultGroupTest=['no','pts','sec'], defaultItemKey='pattern', defaultAttrKey='attr' ):
     print "\t[ Set Frame Query Attribute ]"
     if self.StatementGetterResidute == 1:
       for ItemKey in self.GetterAssociatedName.keys():
         if ItemKey in DefaultGroupTest :
-          if self.GetterNameQuery in self.GetterAssociatedName[ItemKey][defaultItemKey]:
-            self.FrameGetterName=self.GetterAssociatedName[ItemKey][defaultAttrKey]
+          if self.GetterNameQuery in self.GetterAssociatedName[KeyMain][ItemKey][defaultItemKey]:
+            self.FrameGetterName=self.GetterAssociatedName[KeyMain][ItemKey][defaultAttrKey]
             self.StatementCanQuery=True
 
   def GetFrame( self ):
@@ -114,14 +136,15 @@ class VideoImportHandler( object ):
     self.GetterNameQuery          = None
     self.StatementGetterResidute  = 0
     self.StatementCanQuery        = False
+    """ """ 
     self.SetFrameIndexValue( value )
-    self.SetFrameQueryAttr( ) 
+    self.SetFrameQueryAttr( )
     if not self.StatementCanQuery :
       raise self.VideoImportHandlerFrameQueryWarning, self.GetterNameQuery 
     else:
       self.CurrentVideoAlias = self.PropertyVideoAlias
-      setattr( self, 'FrameId', getattr( self.CurrentVideoAlias, self.FrameGetterName)( self.FrameName ) )
-
+      setattr( self, 'FrameId', getattr( self.CurrentVideoAlias, self.FrameGetterName )( self.FrameName ) )
+            
   PropertyFrame=property( GetFrame, SetFrame )
 
   def GetShow( self ):
@@ -133,7 +156,8 @@ class VideoImportHandler( object ):
 
   def SetShow( self, value ):
     print "\t[ Set Display Frame engine ]"
-    self.ShowModule, self.ShowModuleAttrLoad, self.ShowModuleAttrDisplay  = value 
+    self.ShowModule, self.ShowModuleAttrLoad, self.ShowModuleAttrDisplay  = value
+    print "ShowModule: %s\nShowModuleAttrLoad: %s\nShowModuleAttrDisplay: %s\n" % ( self.ShowModule, self.ShowModuleAttrLoad, self.ShowModuleAttrDisplay )
 
   PropertyShow=property( GetShow, SetShow )
 
@@ -219,8 +243,9 @@ class VideoImportObject( object ):
       There is a lot of work behind Property-amalgam and C++, templating in effort to
       make common trait type and value for trait type... 
     """
-    self.Main.PropertyFrame='vs', 'get_frame_sec', 36
     self.Main.PropertyShow= 'VideoHandler', 'fromstring', 'show'
+    self.Main.PropertyFrame=36, 'vs', 'get_frame_sec'
+    
     
 
 if __name__.__eq__( '__main__' ):
