@@ -1,4 +1,4 @@
-import sys, os, re
+import sys, os, re, cStringIO
 import time, datetime
 import cPickle
 import decimal
@@ -19,7 +19,7 @@ def TempFileWriteStreamInit( TempFileLoader, StreamIn ):
   
 def PicklerZipLoader( TempFileLoader, FileName ):
   print "Unpacking Compressed pickler"
-  Dzip=zipfile.ZipFile( FileName, 'r+' )
+  Dzip=zipfile.ZipFile( FileName, 'r' )
   TempFileWriteStreamInit( TempFileLoader, zlib.decompress( Dzip.read( 'fibonacci_excl.pkl' ) ) )
   Dzip.close()
   del Dzip
@@ -48,6 +48,7 @@ def LoadPickler( AtempFile, DictDestName ):
   setattr( __builtins__, DictDestName, Dpickler.load() )
   
 def PicklerLoader( FileNameList, DictDestName='NewfibDict' ):
+  DictUpdated=False
   atemp=tempfile.NamedTemporaryFile()
   Dzip=None
   DRawHandler=None
@@ -59,11 +60,14 @@ def PicklerLoader( FileNameList, DictDestName='NewfibDict' ):
     IntSizePickleCpr=GetSizeStatFile( FileName )
     print "Report File Size : %s" % ( IntSizePickleCpr )
     if IntSizePickleCpr > 0:
-      if FileFormat == 'zip' :
-        PicklerZipLoader( atemp, FileName )
-      if FileFormat == 'raw' :
-        PicklerRawLoader( atemp, FileName )
-      LoadPickler( atemp, DictDestName )
+      if not DictUpdated:
+        if FileFormat == 'zip':
+          PicklerZipLoader( atemp, FileName )
+          DictUpdated=True
+        if FileFormat == 'raw' :
+          PicklerRawLoader( atemp, FileName )
+          DictUpdated=True
+        LoadPickler( atemp, DictDestName )
       
 
 def Fibonacci2( n ):
@@ -127,7 +131,54 @@ def Fibonacci2( n ):
     return DictReturn
   return CallFib( n )
 
+class WarnNoImplicitLock( Warning ):
+  Msg='No Lock is installed inside the Dict, key:%s '
+  def __init__(self, value):
+    Warning.__init__( self, self.Msg % ( value ) )
+
+class WarnOverLockingImplicitLock( Warning ):
+  Msg='Locking already installed in Dict, key:%s '
+  def __init__(self, value):
+    Warning.__init__( self, self.Msg % ( value ) )
+
+DictNameLock=None
+DictNameLockState=None
+
+def SetDictAddImplicitLock( value , LockKeyName='lock', StoreKey='value' ):
+  if len( value ) == 1 :
+    DictNameLock=value
+
+  if not LockKeyName in getattr( eval(DictNameLock) , 'keys' )():
+    DictFib[LockKeyName]=dict()
+    DictFib[LockKeyName][StoreKey]=True
+  else:
+    raise WarnOverLockingImplicitLock, LockKeyName
+
+def GetDictAddImplicitLock( LockKeyName='lock', StoreKey='value' ):
+  if not LockKeyName in getattr( eval(DictNameLock) , 'keys' )():
+    DictFib[LockKeyName]=dict()
+    DictFib[LockKeyName][StoreKey]=True
+  else:
+    raise WarnOverLockingImplicitLock, LockKeyName
+
+def SetDictDelImplicitLock( Dict, LockKeyName='lock', StoreKey='value' ):
+  if LockKeyName in getattr( eval(DictNameLock) , 'keys' )():
+    del DictFib[LockKeyName]
+  else:
+    raise WarnNoImplicitLock, LockKeyName
+
+def GetDictDelImplicitLock( LockKeyName='lock', StoreKey='value' ):
+  if LockKeyName in getattr( eval(DictNameLock) , 'keys' )():
+    del DictFib[LockKeyName]
+  else:
+    raise WarnNoImplicitLock, LockKeyName
+
+PropertyImplicitLockAdd=property( GetDictAddImplicitLock, SetDictAddImplicitLock )
+
+PropertyImplicitLockDel=property( GetDictDelImplicitLock, SetDictDelImplicitLock )
+    
 def UnitTestFibonacci( DictFib, startRange, stopRange ):
+  
   ListContentOut=list()
   TemplateDesc="Fibonacci:%d, %d \nElapsed Time:\n\t%s, %f\n\t%s, %f\n\t%s, %f\n\t"
   CountRange=startRange
@@ -165,16 +216,14 @@ def ShowCreationTime( DictName ):
                    DictNotFibonacci )
     print "Fibonacci: Fb(%d):%d Creation Time <Fibcreation, ExclusionList >%f ; %f sec\n\t%s" % ( TupleDisplay )
 
-def PickleFibonacci( Dict , FhFilename='/home/ubuntu/fibonacci_excl.pkl.zip' ):
+def PickleFibonacci( Dict , FhFilename='/home/ubuntu/fibonacci_excl.pkl.zip', ZipName='fibonacci_excl.pkl' ):
   Dzip=zipfile.ZipFile( FhFilename, 'w' )
   atemp=tempfile.NamedTemporaryFile()
   aPickler=cPickle.Pickler( atemp, -1 )
   aPickler.dump( Dict )
   del aPickler
   atemp.seek(0)
-  ACprObj=zlib.compressobj( 9 )
-  ACprObj.compress( atemp.read() )
-  Dzip.writestr( 'fibonacci_excl',  ACprObj )
+  Dzip.writestr( ZipName, zlib.compress( atemp.read() , 9 ) )
   Dzip.close()
   atemp.file.close()
   del atemp
