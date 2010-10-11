@@ -13,24 +13,26 @@ getcontext().prec = 36
 FhFilename=[ ['/home/ubuntu/fibonacci_excl.pkl.zip', 'zip' ] ,
              ['/home/ubuntu/fibonacci_excl.pkl'    , 'raw' ] ]
 
-def PicklerZipLoader( TempFileLoader ):
+def TempFileWriteStreamInit( TempFileLoader, StreamIn ):
+  TempFileLoader.file.write( StreamIn )
+  TempFileLoader.file.seek( 0 ) 
+  
+def PicklerZipLoader( TempFileLoader, FileName ):
   print "Unpacking Compressed pickler"
   Dzip=zipfile.ZipFile( FileName, 'r+' )
-  TempFileLoader.file.write( zlib.decompress( Dzip.read( 'fibonacci_excl.pkl' ) ) )
-  TempFileLoader.file.seek( 0 ) 
+  TempFileWriteStreamInit( TempFileLoader, zlib.decompress( Dzip.read( 'fibonacci_excl.pkl' ) ) )
   Dzip.close()
   del Dzip
 
-def PicklerRawLoader( TempFileLoader ):
+def PicklerRawLoader( TempFileLoader, FileName ):
   print "Unpacking Un-Compressed pickler"
   DRawHandler=open( FileName, 'r+' )
-  atemp.file.write( DRawHandler.read() )
-  atemp.file.seek( 0 )
+  TempFileWriteStreamInit( TempFileLoader, DRawHandler.read() )
   DRawHandler.close()
   del DRawHandler
 
 def GetSizeStatFile( Filename ):
-  FhStat=open( FileName, 'r+' )
+  FhStat=open( Filename, 'r+' )
   FosStats=os.fstat( FhStat.fileno() )
   IntSizePickleCpr=FosStats.st_size
   FhStat.close()
@@ -38,28 +40,31 @@ def GetSizeStatFile( Filename ):
   del FhStat
   return IntSizePickleCpr
 
-def LoadPickler( AtempFile, NewfibDict ):
+def LoadPickler( AtempFile, DictDestName ):
   Dpickler=cPickle.Unpickler( AtempFile )
   AtempFile.file.seek(0)
   Dpickler=cPickle.Unpickler( AtempFile )
-  NewfibDict=Dpickler.load()
+  #NewfibDict=Dpickler.load()
+  setattr( __builtins__, DictDestName, Dpickler.load() )
   
-def PicklerLoader( FileNameList ):
+def PicklerLoader( FileNameList, DictDestName='NewfibDict' ):
+  atemp=tempfile.NamedTemporaryFile()
+  Dzip=None
+  DRawHandler=None
+  Dpickler=None
+  NewfibDict=None
   for IntFileHandler in range( 0 , len( FileNameList ) ):
     FileName, FileFormat = FileNameList[IntFileHandler]
     print "Testing File: %s " % ( FileName )
     IntSizePickleCpr=GetSizeStatFile( FileName )
-    atemp=tempfile.NamedTemporaryFile()
-    Dzip=None
-    DRawHandler=None
-    Dpickler=None
-    NewfibDict=None
+    print "Report File Size : %s" % ( IntSizePickleCpr )
     if IntSizePickleCpr > 0:
       if FileFormat == 'zip' :
-        PicklerZipLoader( atemp )
+        PicklerZipLoader( atemp, FileName )
       if FileFormat == 'raw' :
-        PicklerRawLoader( atemp )
-    LoadPickler( atemp, NewfibDict )
+        PicklerRawLoader( atemp, FileName )
+      LoadPickler( atemp, DictDestName )
+      
 
 def Fibonacci2( n ):
 
@@ -176,9 +181,10 @@ def PickleFibonacci( Dict , FhFilename='/home/ubuntu/fibonacci_excl.pkl.zip' ):
   
 if __name__ == '__main__' :
   if not 'NewfibDict' in vars():
+    PicklerLoader(FhFilename)
+
     thread.start_new_thread( UnitTestFibonacci, ( NewfibDict ,1 ,1, ) )
 
-  
   #ShowCreationTime( NewfibDict )
   
 	
