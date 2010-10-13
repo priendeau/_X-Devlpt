@@ -44,8 +44,10 @@ class PairTreeFactory( object ):
 
       def SetKeyNodeType( self, value ):
         self.RootNodeKeyTypeNodeName=value
+        self.RootNodeKeyTypeNode=type( self.RootNodeValue )
+        if self.RootNodeKeyTypeNode == type(dict()):
+          self.RootNodeKeyTypeNodeKey=self.RootNodeValue.keys()
         
-
       PropertyKeyNodeType=property( GetKeyNodeType, SetKeyNodeType )
 
       def GetKeyNodeRoot( self ):
@@ -55,7 +57,7 @@ class PairTreeFactory( object ):
         self.RootNodeKey=value
         self.RootNodeValue=self.DictReference[ self.RootNodeKey ]
         ### Adding the PropertyKeyNodeType to obtain the type:
-        
+        self.PropertyKeyNodeType=self.RootNodeKey
 
       PropertyKeyNode=property( GetKeyNodeRoot, SetKeyNodeRoot )      
 
