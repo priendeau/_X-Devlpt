@@ -1,6 +1,19 @@
 import sys, os, re, uno, iterpipes, thread, time
 from iterpipes import cmd, bincmd, linecmd, run, call, check_call, cmdformat, compose
+"""
+  Will be usefull on launching-date, will search if a package for openoofice is installed...
+  And maybe all the rest...
+  don't forget,
+  
+  for Item in [ 'uno', 'apt' ] :
+    for ItemLine in run( linecmd( 'pip install {}', ( Item ) ) ) :
+      print ItemLine
+  Can install everything automatically...
 
+  having a repository holding iterpipes, using autoinstall a must...
+  
+"""
+from apt import cache
 
 """
 Openning the OpenOffice Writer with socket Handler
@@ -22,9 +35,15 @@ class OpenOfficeWriterBrigeImpl( object ):
     TriggerList={ 'interruption':False }
     TriggerKey=None
     TriggerValue=None
+    EngineList=['oocalc', 'oodraw', 'ooffice', 'oomath', 'ooimpress', 'ooweb', 'oowriter']
 
 
     class FactoryFinish( Warning ):
+      Msg='FactoryFinish raised for Interruption of %s'
+      def __init__(self, value ):
+        Warning.__init__( self, self.Msg % ( value ) )
+
+    class FactoryFinish( Exception ):
       Msg='FactoryFinish raised for Interruption of %s'
       def __init__(self, value ):
         Exception.__init__( self, self.Msg % ( value ) )
@@ -58,7 +77,8 @@ class OpenOfficeWriterBrigeImpl( object ):
         Warning.__init__( self, self.Msg % ( value ) )
 
     def GetTriggerState( self ):
-      return self.TriggerList[self.TriggerKey]
+      if self.TriggerList[self.TriggerKey] == True:
+        raise self.FactoryFinish, self.TriggerKey
 
     """
       Only True are allowed, most of the time they are final interruption and will not imply an unlocking...
@@ -99,6 +119,12 @@ class OpenOfficeWriterBrigeImpl( object ):
 
     def GetUpdateURIBridgeArgList( self ):
       return self.URIConnection
+
+    def GetOpenOffice( self, value ):
+      self.OpenOfficeEngine = 'value'
+      
+    def SetOpenOffice( self ):
+      return self.OpenOfficeEngine
 
     PropertyTriggerInterrupt=property( GetTriggerState, SetTriggerState )
 
