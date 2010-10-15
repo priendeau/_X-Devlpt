@@ -1,4 +1,4 @@
-import sys, os, re, uno, iterpipes, thread
+import sys, os, re, uno, iterpipes, thread, time
 from iterpipes import cmd, bincmd, linecmd, run, call, check_call, cmdformat, compose
 
 
@@ -14,26 +14,34 @@ class OpenOfficeWriterBrigeFactory( object ):
   resolver=None
   ctx=None
   URIConnection=None
+  WriterReady=False
+  InterfaceWaitingTotal=None
+  DefaultSleepSlice=5
+
+  class FactoryFinish( Exception ):
+    Msg='PropertyURIException raised from Function %s.'
+    def __init__(self, value ):
+      Exception.__init__( self, self.Msg % ( value ) )
 
   class PropertyGetterURIException( Exception ):
     Msg='PropertyURIException raised from Function %s.'
     def __init__(self, value ):
-      Warning.__init__( self, self.Msg % ( value ) )
+      Exception.__init__( self, self.Msg % ( value ) )
 
   class PropertySetterURIException( Exception ):
     Msg='PropertySetterURIException raised from Function %s.'
     def __init__(self, value ):
-      Warning.__init__( self, self.Msg % ( value ) )
+      Exception.__init__( self, self.Msg % ( value ) )
 
   class PropertySetterURINoAttrAssingException( Exception ):
     Msg='PropertySetterURINoAttrAssingException raised from Function %s.'
     def __init__(self, value ):
-      Warning.__init__( self, self.Msg % ( value ) )
+      Exception.__init__( self, self.Msg % ( value ) )
 
   class PropertySetterURIMissingFieldException( Exception ):
     Msg='PropertySetterURIMissingFieldException raised from Function %s.'
     def __init__(self, value ):
-      Warning.__init__( self, self.Msg % ( value ) )
+      Exception.__init__( self, self.Msg % ( value ) )
 
   class PropertySetterUpdateURIBridgeArgListException( Exception ):
     Msg='PropertySetterUpdateURIBridgeArgListException raised from Function %s. Missing the only one key <<True>>'
@@ -85,9 +93,14 @@ class OpenOfficeWriterBrigeFactory( object ):
       raise (self.PropertyGetterURIException,self.ListURIConnectionNotInstanciated), (self.CmdOpenWriter.__name__,self.CmdOpenWriter.__name__)
     for self.ItemLine in run( self.AlineCmd ):
       sys.stdout.write( '%s' % ( self.ItemLine )  )
+    self.WriterReady=True
 
   def StartThread( self ):
-    
+    thread.start_new_thread( self.CmdOpenWriter, (,) )
+    while not self.WriterReady :
+      time.sleep( self.DefaultSleepSlice )
+      self.InterfaceWaitingTotal+=self.DefaultSleepSlice
+      
 
   def OpenBridge( self ):
     """
