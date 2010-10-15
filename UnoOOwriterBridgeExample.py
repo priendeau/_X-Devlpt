@@ -36,9 +36,10 @@ class OpenOfficeWriterBrigeImpl( object ):
     TriggerKey=None
     TriggerValue=None
     EngineList=['oocalc', 'oodraw', 'ooffice', 'oomath', 'ooimpress', 'ooweb', 'oowriter']
+    OfficeEngine=None
 
 
-    class FactoryFinish( Warning ):
+    class EngineListNotImplemented( Warning ):
       Msg='FactoryFinish raised for Interruption of %s'
       def __init__(self, value ):
         Warning.__init__( self, self.Msg % ( value ) )
@@ -123,7 +124,9 @@ class OpenOfficeWriterBrigeImpl( object ):
     def GetOpenOffice( self, value ):
       self.OpenOfficeEngine = 'value'
       
-    def SetOpenOffice( self ):
+    def SetOpenOffice( self, value ):
+      if value not in self.EngineListNotImplemented:
+        raise self.EngineListNotImplemented
       return self.OpenOfficeEngine
 
     PropertyTriggerInterrupt=property( GetTriggerState, SetTriggerState )
