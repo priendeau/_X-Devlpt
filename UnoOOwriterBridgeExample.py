@@ -1,4 +1,4 @@
-import sys, os, re, uno, iterpipes
+import sys, os, re, uno, iterpipes, thread
 from iterpipes import cmd, bincmd, linecmd, run, call, check_call, cmdformat, compose
 
 
@@ -36,7 +36,7 @@ class OpenOfficeWriterBrigeFactory( object ):
       Warning.__init__( self, self.Msg % ( value ) )
 
   class PropertySetterUpdateURIBridgeArgListException( Exception ):
-    Msg='PropertySetterUpdateURIBridgeArgListException %s.'
+    Msg='PropertySetterUpdateURIBridgeArgListException raised from Function %s. Missing the only one key <<True>>'
   
   class ListURIConnectionNotInstanciated( Warning ):
     Msg='ListURIConnectionNotInstanciated raised from Function %s in favor of empty self.URIConnection not instantiated or incorrectly parsed.'
@@ -65,24 +65,29 @@ class OpenOfficeWriterBrigeFactory( object ):
       self.URIConnection.append( StreamInfoValue )
 
   def SetUpdateURIBridgeArgList( self, value  ):
+    FuncName=self.SetUpdateURIBridgeArgList.__name__
     if value == True :
       self.URIConnection=[ self.StrAcceptBridgeType , self.StrHostBridge, self.IntPortBridge ]
     else:
-      raise self.
+      raise self.PropertySetterUpdateURIBridgeArgListException, FuncName
 
   def GetUpdateURIBridgeArgList( self ):
     return self.URIConnection
 
   PropertyUpdateURIBridge=property( GetUpdateURIBridgeArgList, SetUpdateURIBridgeArgList )
+
+  PropertyUriConnection=property( GetUriConnection, SetUriConnection )
   
   def CmdOpenWriter( self ):
     try:
       self.AlineCmd=linecmd( 'oowriter {}', "\"-accept=%s,host=%s,port=%s;urp;\"" %  ListArgParse )
     except self.PropertyURIException:
       raise (self.PropertyGetterURIException,self.ListURIConnectionNotInstanciated), (self.CmdOpenWriter.__name__,self.CmdOpenWriter.__name__)
-
     for self.ItemLine in run( self.AlineCmd ):
       sys.stdout.write( '%s' % ( self.ItemLine )  )
+
+  def StartThread( self ):
+    
 
   def OpenBridge( self ):
     """
