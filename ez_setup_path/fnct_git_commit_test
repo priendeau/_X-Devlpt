@@ -1,0 +1,62 @@
+function __start_Ez_Analysis()
+{
+ eval $( __call_localityLocalName=EzAnalysis __call_locality ) ;
+ eval $( FParamFuncName=${StrFuncName} FParamSuffixName=SkipName FParamVarName=StrSkipName FParamDefaultValue=gaphas     __fnctCreateLocalityFuncParam );
+ eval $( FParamFuncName=${StrFuncName} FParamSuffixName=DefaultPwd FParamVarName=StrDefaultPwd FParamDefaultValue=/home/ubuntu/git/priendeau/_X-Develpt/ez_setup_path     __fnctCreateLocalityFuncParam );
+ eval $( FParamFuncName=${StrFuncName} FParamSuffixName=CommitTestFile FParamVarName=StrCommitTestFile FParamDefaultValue=ez_setup.py     __fnctCreateLocalityFuncParam );
+ eval $( FParamFuncName=${StrFuncName} FParamSuffixName=DefaultPythonDist FParamVarName=StrDefaultPythonDist FParamDefaultValue=/usr/local/lib/python2.6/dist-packages     __fnctCreateLocalityFuncParam );
+
+ function __fnct_find()
+ {
+   find ${StrDefaultPythonDist} -type f -iname "${StrCommitTestFile}" -printf "%p " ;
+ }
+ function __fnct_grep()
+ {
+  egrep -ic --no-filename "${StrSkipName}"
+ }
+ 
+ local ArrayEz=( $( __fnct_find ) ) ;
+ 
+ function IsSkipName()
+ {
+  eval $( __call_localityLocalName=SkipName __call_locality ) ;
+  local IntTestSkipName=$( echo "${ArrayArg[0]}" | __fnct_grep ) ;
+  if [ ${IntTestSkipName:=0} -gt 0 ] ; then
+   IsSkipNameReach=True
+  fi
+ }
+ function CopyTo()
+ {
+  eval $( __call_localityLocalName=CopyTo __call_locality ) ;
+  if [ ${IsSkipNameReach:=False} == "False" ] ; then 
+   cp ${ArrayArg[0]} ${StrDefaultPwd} ; > /dev/stderr ;
+  else
+   echo -ne "Skipping File ${ArrayArg[0]}\n" > /dev/stderr ;
+  fi
+  
+ }
+ function GitUpdate()
+ {
+  eval $( __call_localityLocalName=CopyTo __call_locality ) ;
+  if [ ${IsSkipNameReach:=False} == "False" ] ; then 
+   git commit -m \"filename:${ArrayArg[0]}\" ${StrCommitTestFile} > /dev/stderr ;
+   git push origin master > /dev/stderr ;
+  fi
+ }
+ 
+ local ArrayListProg=( IsSkipName CopyTo GitUpdate ) ;
+ function update_ez_def()    
+ { 
+  eval $( __call_localityLocalName=UpdateEzDef __call_locality ) ;
+  local ArrayFileArg=( ${ArrayArg[0]} );
+  
+  function __roll()
+  {
+    eval $( __call_localityLocalName=Roll __call_locality ) ;
+    eval "${ArrayArg[0]} ${ArrayFileArg[0]}" ;
+  }
+  local IsSkipNameReach=False;
+  eval $( __in_for ArrayListProg __roll )
+ }
+ eval $( __in_for ArrayEz update_ez_def ) ;
+}
