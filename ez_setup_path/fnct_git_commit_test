@@ -31,7 +31,7 @@ function __start_Ez_Analysis()
   if [ ${IsSkipNameReach:=False} == "False" ] ; then 
    cp ${ArrayArg[0]} ${StrDefaultPwd} ; > /dev/stderr ;
   else
-   echo -ne "Skipping File ${ArrayArg[0]}\n" > /dev/stderr ;
+   echo -ne "Skipping File ${ArrayEz[${intArrayEz}]}\n" > /dev/stderr ;
   fi
   
  }
@@ -39,7 +39,7 @@ function __start_Ez_Analysis()
  {
   eval $( __call_localityLocalName=CopyTo __call_locality ) ;
   if [ ${IsSkipNameReach:=False} == "False" ] ; then 
-   git commit -m \"filename:${ArrayArg[0]}\" ${StrCommitTestFile} > /dev/stderr ;
+   git commit -m \"filename:${ArrayEz[${intArrayEz}]}\" ${StrCommitTestFile} > /dev/stderr ;
    git push origin master > /dev/stderr ;
   fi
  }
@@ -48,12 +48,12 @@ function __start_Ez_Analysis()
  function update_ez_def()    
  { 
   eval $( __call_localityLocalName=UpdateEzDef __call_locality ) ;
-  local ArrayFileArg=( ${ArrayArg[0]} );
+  local ArrayFileArg=( ${ArrayEz[${intArrayEz}]} );
   
   function __roll()
   {
     eval $( __call_localityLocalName=Roll __call_locality ) ;
-    eval "${ArrayArg[0]} ${ArrayFileArg[0]}" ;
+    eval "${ArrayListProg[${intArrayListProg}]} ${ArrayFileArg[0]}" ;
   }
   local IsSkipNameReach=False;
   eval $( __in_for ArrayListProg __roll )
