@@ -10,8 +10,8 @@ from decimal import *
 
 getcontext().prec = 36
 
-FhFilename=[ ['/home/ubuntu/fibonacci_excl.pkl.zip', 'zip' ] ,
-             ['/home/ubuntu/fibonacci_excl.pkl'    , 'raw' ] ]
+FhFilename=[ ['fibonacci_excl.pkl.zip', 'zip' ] ,
+             ['fibonacci_excl.pkl'    , 'raw' ] ]
 
 def TempFileWriteStreamInit( TempFileLoader, StreamIn ):
   TempFileLoader.file.write( StreamIn )
