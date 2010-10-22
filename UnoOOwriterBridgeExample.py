@@ -209,6 +209,7 @@ class OpenOfficeWriterBrigeImpl( object ):
       """
         Connecting the Bridge
       """
+
       self.ctx = resolver.resolve( "uno:%s,host=%s,port=%s;urp;StarOffice.ComponentContext" % self.PropertyUriConnection  )
 
 
