@@ -24,7 +24,31 @@ from iterpipes import cmd, bincmd, linecmd, run, call, check_call, cmdformat, co
 
   It own exact functionality except this one can be automated for mass development...
 
-  Quite Simple ;) 
+  Quite Simple ;)
+
+
+  Other Transistive option : Learning aids and Tutorial on specific context...
+
+  Known, Office tools is a 4th generation of tools, being able to do everything,
+  people learning how it's working gain more than just supplemental qualification
+  but can reduce considerably effort, scheme and dignostic by providing plan,
+  answer and event over what is asked.. But Unfortunately there is no information
+  on specific methodology for specific context needs. There is several Exemple and
+  human are cowardly invited to uses theirs brain to seek for similarity. This
+  UnoBridge, can design the All-Experience in a sequence which can teach more easily
+  in professionnal context specific alternate tools can safe time rather having no
+  hands at all helping for a task, there is couple of solution.
+
+  Learning Aids is a domains keys in ADD, ADHD, stimulus in todays over uses of
+  stimulant, contribued to ruins dopamine-attention-based situation involving
+  similirarity visualisation, sematic approximation and task alternative
+  distribution...
+
+  Note: Merely synthesised from DSM-IV, ADD and ADHD deficit in child schoolar performance
+  and lack of creativity and motivation skills.
+
+  
+  
 
 """
 
