@@ -1,3 +1,6 @@
+### This Need Fnct.d, fnct_lib to work... Everything is in Alpha and will 
+### be documented versatility when I will pass the 1.0 version at least...
+### 
 function __start_Ez_Analysis()
 {
  eval $( __call_localityLocalName=EzAnalysis __call_locality ) ;
