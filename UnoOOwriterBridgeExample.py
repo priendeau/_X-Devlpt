@@ -2,7 +2,6 @@ import sys, os, re, uno, iterpipes, thread, time
 import iterpipes
 from iterpipes import cmd, bincmd, linecmd, run, call, check_call, cmdformat, compose
 
-
 """
   - Under development.
   - not final
