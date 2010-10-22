@@ -8,6 +8,10 @@ import zlib
 import tempfile
 from decimal import *
 
+###
+### FileName : Fibonnaci_exclusion_number.py
+### 
+
 getcontext().prec = 36
 
 FhFilename=[ ['fibonacci_excl.pkl.zip', 'zip' ] ,
@@ -45,9 +49,10 @@ def LoadPickler( AtempFile, DictDestName ):
   AtempFile.file.seek(0)
   Dpickler=cPickle.Unpickler( AtempFile )
   #NewfibDict=Dpickler.load()
-  setattr( __builtins__, DictDestName, Dpickler.load() )
+  #setattr( __builtins__, DictDestName, Dpickler.load() )
+  DictDestName.update( Dpickler.load() )
   
-def PicklerLoader( FileNameList, DictDestName='NewfibDict' ):
+def PicklerLoader( FileNameList, DictDestName ):
   DictUpdated=False
   atemp=tempfile.NamedTemporaryFile()
   Dzip=None
@@ -230,10 +235,16 @@ def PickleFibonacci( Dict , FhFilename='/home/ubuntu/fibonacci_excl.pkl.zip', Zi
   
 if __name__ == '__main__' :
   if not 'NewfibDict' in vars():
-    PicklerLoader(FhFilename)
-
+    NewfibDict=dict()
+    PicklerLoader(FhFilename,NewfibDict)
+    
     thread.start_new_thread( UnitTestFibonacci, ( NewfibDict ,1 ,1, ) )
-
+else:
+ if not 'NewfibDict' in vars():
+  NewfibDict=dict()
+  PicklerLoader(FhFilename,NewfibDict)
+  thread.start_new_thread( UnitTestFibonacci, ( NewfibDict ,1 ,1, ) )
+  
   #ShowCreationTime( NewfibDict )
   
 	

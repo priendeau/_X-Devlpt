@@ -1,5 +1,26 @@
 import sys, os, re, uno, iterpipes, thread, time
+import iterpipes
 from iterpipes import cmd, bincmd, linecmd, run, call, check_call, cmdformat, compose
+
+"""
+  Explanation :
+  What is a UnoOOBridge ?
+
+  Belong to Sun, OpenOffice division, Developpers from OpenOffice have provided extra functionality
+  for developper like scipting and programmatic-macro to let creation and automation of Users-experience
+  being seemless to human normal development, in mass production of content.
+
+  The UnoBridge is a module and this module can access to an Open Instance of worlking Office
+  Suite tools like OOWriter, OOCalc, OOPresentation... And can talk to the engine, being able to
+  act like user and add content...
+
+  It own exact functionality except this one can be automated for mass development...
+
+  Quite Simple ;) 
+
+"""
+
+
 """
   Will be usefull on launching-date, will search if a package for openoofice is installed...
   And maybe all the rest...
