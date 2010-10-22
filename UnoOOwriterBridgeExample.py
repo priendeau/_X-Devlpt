@@ -3,6 +3,14 @@ import iterpipes
 from iterpipes import cmd, bincmd, linecmd, run, call, check_call, cmdformat, compose
 
 """
+  - Under development.
+  - not final
+  - is prototype
+  - thoose can correct it shall not ask to get it work before I decide to remove the Item No.2
+  - Have a nice day.
+"""
+
+"""
   Explanation :
   What is a UnoOOBridge ?
 
