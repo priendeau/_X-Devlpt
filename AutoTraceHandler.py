@@ -35,6 +35,17 @@ def ImageInputString( cls ):
   print ImageInputString.__name__
   cls.ImageInputStringHandler( cls )
 
+
+"""
+  Tiny abdstraction to implement a Raiser error example ( this one show the use of ImplementError ) ,
+  forcing implementing a name and condition type inside a static-class to allow registry of class within
+  a Factory to trigger if all function are registered... Nonsense for security, but using Property(Getter/Setter),
+  can arbritrary raise error belong to un-allowed def rather filtering None Value of arbitrary-Nan ...
+
+  Cited on babillard of franco-Media thru a BBS in 1996, and somewhere in a programmatic channel, about uses
+  lof decorator in Inner-class referecen... ( It was merely Two weeks after I decide to learn python in 1996
+  when I saw how we can enhance decorator... )
+"""
 class DecoratorAutotrace:
 
   DictReference={
