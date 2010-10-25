@@ -28,6 +28,11 @@ def HexNumber( cls ):
 def AngleNumber( cls ):
   print AngleNumber.__name__
   cls.AngleNumberHandler( cls )
+
+@classmethod
+def ImageInputString( cls ):
+  print ImageInputString.__name__
+  cls.ImageInputStringHandler( cls )
   
 class AutoTraceProperty( object ):
   DictReference={ 'name':'dict',
@@ -53,7 +58,7 @@ class AutoTraceProperty( object ):
                              'string-filename':{'name':'str',
                                                 'type':type(str()) ,
                                                 'value':[ 'input-name','output-file' ] },
-                             'image-input-format':{'name':'str',
+                             'image-input-format':{'name':'ImageInputString',
                                                 'type':'ImageInput' ,
                                                 'value':[ 'png', 'tga', 'pbm', 'pnm', 'pgm', 'ppm' , 'bmp' ] },
                              'image-output-format':{'name':'str',
