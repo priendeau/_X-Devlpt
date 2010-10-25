@@ -38,7 +38,7 @@ def ImageInputString( cls ):
 class DecoratorAutotrace:
   
   @classmethod
-  def TimerImplement( cls, AttrNameProcHwnd ):
+  def TimerImplement( cls,  AttrNameProcHwnd ):
     
     """
     This Decorator Will:
@@ -48,10 +48,10 @@ class DecoratorAutotrace:
     """
     def decorator(func):
         def inner(*args, **kwargs):
-          if not func.__name__ in getattr( cls, AttrNameProcHwnd ).keys():
-            getattr( cls, AttrNameProcHwnd )[func.__name__]=list()
+          if not func.__name__ in getattr( cls.__class__, AttrNameProcHwnd ).keys():
+            getattr( cls.__class__, AttrNameProcHwnd )[func.__name__]=list()
           else:
-            getattr( cls, AttrNameProcHwnd )[func.__name__].append( time.time() )
+            getattr( cls.__class__, AttrNameProcHwnd )[func.__name__].append( time.time() )
           func( *args, **kwargs )
         return inner
     return decorator
@@ -121,23 +121,23 @@ class AutoTraceFactory( object ):
 
 class AutoTraceProperty( object ):
   
-  @TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
+  @DecoratorAutotrace.TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
   def ImageInputHandler( self ):
     print "Entry..."
 
-  @TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
+  @DecoratorAutotrace.TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
   def ImageOutputHandler( self ):
     print "Entry..."
 
-  @TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
+  @DecoratorAutotrace.TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
   def HexNumberHandler( self  ):
     print "Entry..."
 
-  @TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
+  @DecoratorAutotrace.TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
   def AngleNumberHandler( self ):
     print "Entry..."
 
-  @TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
+  @DecoratorAutotrace.TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
   def ImageInputStringHandler( self ):
     print "Entry..."
   
