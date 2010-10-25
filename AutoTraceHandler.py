@@ -46,7 +46,7 @@ class DecoratorAutotrace:
     self.DictReferencep[ 'Error' ][ 'Handler' ]= True
     self.DictReferencep[ 'Name' ][ 'Handler' ]=ErrorName
     
-  
+ 
   @staticmethod
   def TimerImplement( ClassName,  AttrNameProcHwnd ):
     
@@ -58,6 +58,9 @@ class DecoratorAutotrace:
     """
     def decorator(func):
         def inner(*args, **kwargs):
+          if self.DictReferencep[ 'Error' ][ 'Handler' ] == True:
+            raise getattr( ClassName, self.DictReferencep[ 'Name' ][ 'Handler' ] )
+          
           if not func.__name__ in getattr( ClassName , AttrNameProcHwnd ).keys():
             getattr( ClassName, AttrNameProcHwnd )[func.__name__]=list()
           else:
