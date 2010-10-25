@@ -45,6 +45,8 @@ def ImageInputString( cls ):
   Cited on babillard of franco-Media thru a BBS in 1996, and somewhere in a programmatic channel, about uses
   lof decorator in Inner-class referecen... ( It was merely Two weeks after I decide to learn python in 1996
   when I saw how we can enhance decorator... )
+                                           .(.
+                                            .
 """
 class DecoratorAutotrace:
 
