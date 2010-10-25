@@ -8,6 +8,8 @@ from socket import *
     The Normal Link Librayry with Swig wrapper and next to it, a Pyrex... 
 """
 
+
+  
 @classmethod
 def ImageInput( cls ):
   print ImageInput.__name__
@@ -33,8 +35,11 @@ def ImageInputString( cls ):
   print ImageInputString.__name__
   cls.ImageInputStringHandler( cls )
 
-@classmethod
-def TimerImplement( cls, AttrNameProcHwnd ):
+class DecoratorAutotrace:
+  
+  @classmethod
+  def TimerImplement( cls, AttrNameProcHwnd ):
+    
     """
     This Decorator Will:
     - Create a variable funcName being assigned automatically to funcName the FunctionName
