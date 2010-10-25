@@ -3,6 +3,11 @@ import thread
 from iterpipes import cmd, bincmd, linecmd, run, call, check_call, cmdformat, compose
 from socket import *
 
+"""
+    This Prototype Implementation will use simple iterpipes-access, future release will add sucessfully
+    The Normal Link Librayry with Swig wrapper and next to it, a Pyrex... 
+"""
+
 @classmethod
 def ImageInput( cls ):
   print ImageInput.__name__
