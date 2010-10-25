@@ -51,8 +51,7 @@ def TimerImplement( cls, AttrNameProcHwnd ):
         return inner
     return decorator
   
-class AutoTraceProperty( object ):
-  
+class AutoTraceFactory( object ):
   DictReference={ 'name':'dict',
                   'value':[ 'PropertyReference' ],
                   'dict':{ 'name':'type',
@@ -114,7 +113,13 @@ class AutoTraceProperty( object ):
                       'version':None,
                       'width-weight-factor':None }
 
-  @TimerImplement( AutoTraceProperty().__class__ , 'ProcAccessTime' )
+
+class AutoTraceProperty( object ):
+  
+
+  InnerAutoTraceProperty=super( AutoTraceProperty )
+  
+  @TimerImplement( InnerAutoTraceProperty , 'ProcAccessTime' )
   def ImageInputHandler( self ):
     print "Entry..."
 
