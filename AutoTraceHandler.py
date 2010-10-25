@@ -52,6 +52,7 @@ def TimerImplement( cls, AttrNameProcHwnd ):
     return decorator
   
 class AutoTraceProperty( object ):
+  
   DictReference={ 'name':'dict',
                   'value':[ 'PropertyReference' ],
                   'dict':{ 'name':'type',
