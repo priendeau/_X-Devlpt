@@ -114,7 +114,7 @@ class AutoTraceProperty( object ):
                       'version':None,
                       'width-weight-factor':None }
 
-  @TimerImplement( self , 'ProcAccessTime' )
+  @TimerImplement( AutoTraceProperty().__class__ , 'ProcAccessTime' )
   def ImageInputHandler( self ):
     print "Entry..."
 
