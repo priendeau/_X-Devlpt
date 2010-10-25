@@ -57,7 +57,7 @@ class DecoratorAutotrace:
     return decorator
 
   @staticmethod
-  def ParseTheKargs( ClassName,  ShelveObject ):
+  def ParseTheKargs( ClassName,  ShelveObject, TypeObj ):
     
     """
     This Decorator Will:
@@ -167,6 +167,7 @@ class AutoTraceProperty( object ):
 
 class AutotraceHandler():
 
+  @DecoratorAutotrace.ParseTheKargs( AutoTraceFactory , None )
   def __init__( self ):
 
 
