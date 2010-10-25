@@ -42,7 +42,7 @@ class AutoTraceProperty( object ):
                                      'value':[ 'centerline', 'log','preserve-width','remove-adjacent-corners','report-progress','debug-arch','debug-bitmap' ] },
                              'unsigned':{'name':'int',
                                          'type':type(int()) ,
-                                         'value':[ ] },
+                                         'value':[ 'color-count','corner-surround','despeckle-level','dpi','filter-iterations' ] },
                              'angle-in-degrees':{ 'name':'AngleNumber',
                                                   'type':type(int()) ,
                                                   'value':[ 'corner-always-threshold', 'corner-threshold' ] },
