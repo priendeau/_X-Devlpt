@@ -64,6 +64,7 @@ class AutoTraceFactory( object ):
                                      'image-input-format', 'image-output-format'],
                            'hexadecimal':{ 'name':'HexNumber',
                                            'type':type(int()) ,
+                                           'range':[0,65535],
                                            'value':[ 'background-color' ] },
                              'bool':{ 'name':'bool',
                                       'type':type(bool()),
@@ -141,6 +142,10 @@ class AutoTraceProperty( object ):
   @DecoratorAutotrace.TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
   def ImageInputStringHandler( self ):
     print "Entry..."
+
+
+if __name__.__eq__( '__main__' ):
+  AAutotraceObj=AutoTraceProperty()
   
 """ 'bool', 'unsigned', 'angle-in-degrees', 'real', 'string-filename',  ,'image-input-format':['png', 'tga', 'pbm', 'pnm', 'pgm', 'ppm' , 'bmp']
 'image-output-format':['eps', 'ai', 'p2e', 'sk', 'svg', 'fig', 'emf', 'mif', 'er', 'dxf', 'epd', 'pdf', 'cgm','magick', 'idraw', 'obj', 'tgif', 'gnuplot', 'svm', 'tk', 'gschem', 'pcbfill', 'pcb', 'pcb', 'pcbi', 'hpgl', 'pic','xml', 'noixml', 'tex', 'latex2e', 'm', 'mma', 'asy', 'mp', 'mpost', 'txt', 'text','kil', 'java2', 'java', 'java1', 'rpl', 'rib', 'lwo', 'meta', 'gmfa', 'meta', 'gmfb', 'plot', 'pnm', 'plot-pnm', 'pcl', 'plot-pcl', 'hpgl', 'plot-hpgl', 'tek', 'plot-tek' ,'dr2d']
