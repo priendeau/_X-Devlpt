@@ -32,6 +32,24 @@ def AngleNumber( cls ):
 def ImageInputString( cls ):
   print ImageInputString.__name__
   cls.ImageInputStringHandler( cls )
+
+@classmethod
+def TimerImplement( cls, AttrNameProcHwnd ):
+    """
+    This Decorator Will:
+    - Create a variable funcName being assigned automatically to funcName the FunctionName
+
+    The marshaller computes a key from function arguments
+    """
+    def decorator(func):
+        def inner(*args, **kwargs):
+          if not func.__name__ in getattr( cls, AttrNameProcHwnd ).keys():
+            getattr( cls, AttrNameProcHwnd )[func.__name__]=list()
+          else:
+            getattr( cls, AttrNameProcHwnd )[func.__name__].append( time.time() )
+          func( *args, **kwargs )
+        return inner
+    return decorator
   
 class AutoTraceProperty( object ):
   DictReference={ 'name':'dict',
@@ -95,16 +113,25 @@ class AutoTraceProperty( object ):
                       'version':None,
                       'width-weight-factor':None }
 
+  @TimerImplement( self , 'ProcAccessTime' )
   def ImageInputHandler( self ):
-    self.
-                        
+    print "Entry..."
+
+  @TimerImplement( self , 'ProcAccessTime' )
   def ImageOutputHandler( self ):
+    print "Entry..."
 
+  @TimerImplement( self , 'ProcAccessTime' )
   def HexNumberHandler( self  ):
+    print "Entry..."
 
+  @TimerImplement( self , 'ProcAccessTime' )
   def AngleNumberHandler( self ):
+    print "Entry..."
 
-  def ImageInputStringHandler( self )
+  @TimerImplement( self , 'ProcAccessTime' )
+  def ImageInputStringHandler( self ):
+    print "Entry..."
   
 """ 'bool', 'unsigned', 'angle-in-degrees', 'real', 'string-filename',  ,'image-input-format':['png', 'tga', 'pbm', 'pnm', 'pgm', 'ppm' , 'bmp']
 'image-output-format':['eps', 'ai', 'p2e', 'sk', 'svg', 'fig', 'emf', 'mif', 'er', 'dxf', 'epd', 'pdf', 'cgm','magick', 'idraw', 'obj', 'tgif', 'gnuplot', 'svm', 'tk', 'gschem', 'pcbfill', 'pcb', 'pcb', 'pcbi', 'hpgl', 'pic','xml', 'noixml', 'tex', 'latex2e', 'm', 'mma', 'asy', 'mp', 'mpost', 'txt', 'text','kil', 'java2', 'java', 'java1', 'rpl', 'rib', 'lwo', 'meta', 'gmfa', 'meta', 'gmfb', 'plot', 'pnm', 'plot-pnm', 'pcl', 'plot-pcl', 'hpgl', 'plot-hpgl', 'tek', 'plot-tek' ,'dr2d']
