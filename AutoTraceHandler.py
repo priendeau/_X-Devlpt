@@ -1,8 +1,7 @@
-import sys, os, re, cStringIO, cPickle, iterpipes
-import thread 
+import sys, os, re, cStringIO, cPickle, iterpipes, thread ,PIL, datetime, time
 from iterpipes import cmd, bincmd, linecmd, run, call, check_call, cmdformat, compose
 from socket import *
-import PIL
+
 
 """
     This Prototype Implementation will use simple iterpipes-access, future release will add sucessfully
@@ -66,7 +65,7 @@ class AutoTraceProperty( object ):
                                                     'value':[ 'eps', 'ai', 'p2e', 'sk', 'svg', 'fig', 'emf', 'mif', 'er', 'dxf', 'epd', 'pdf', 'cgm','magick', 'idraw', 'obj', 'tgif', 'gnuplot', 'svm', 'tk', 'gschem', 'pcbfill', 'pcb', 'pcb', 'pcbi', 'hpgl', 'pic','xml', 'noixml', 'tex', 'latex2e', 'm', 'mma', 'asy', 'mp', 'mpost', 'txt', 'text','kil', 'java2', 'java', 'java1', 'rpl', 'rib', 'lwo', 'meta', 'gmfa', 'meta', 'gmfb', 'plot', 'pnm', 'plot-pnm', 'pcl', 'plot-pcl', 'hpgl', 'plot-hpgl', 'tek', 'plot-tek' ,'dr2d' ] }
                              } } }
                              
-                           
+  ProcAccessTime={ }          
   PropertyReference={ 'input-name':None,
                       'background-color':None,
                       'centerline':None,
@@ -97,12 +96,15 @@ class AutoTraceProperty( object ):
                       'width-weight-factor':None }
 
   def ImageInputHandler( self ):
+    self.
                         
   def ImageOutputHandler( self ):
 
   def HexNumberHandler( self  ):
 
   def AngleNumberHandler( self ):
+
+  def ImageInputStringHandler( self )
   
 """ 'bool', 'unsigned', 'angle-in-degrees', 'real', 'string-filename',  ,'image-input-format':['png', 'tga', 'pbm', 'pnm', 'pgm', 'ppm' , 'bmp']
 'image-output-format':['eps', 'ai', 'p2e', 'sk', 'svg', 'fig', 'emf', 'mif', 'er', 'dxf', 'epd', 'pdf', 'cgm','magick', 'idraw', 'obj', 'tgif', 'gnuplot', 'svm', 'tk', 'gschem', 'pcbfill', 'pcb', 'pcb', 'pcbi', 'hpgl', 'pic','xml', 'noixml', 'tex', 'latex2e', 'm', 'mma', 'asy', 'mp', 'mpost', 'txt', 'text','kil', 'java2', 'java', 'java1', 'rpl', 'rib', 'lwo', 'meta', 'gmfa', 'meta', 'gmfb', 'plot', 'pnm', 'plot-pnm', 'pcl', 'plot-pcl', 'hpgl', 'plot-hpgl', 'tek', 'plot-tek' ,'dr2d']
