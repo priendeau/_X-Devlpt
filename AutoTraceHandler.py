@@ -116,26 +116,23 @@ class AutoTraceFactory( object ):
 
 class AutoTraceProperty( object ):
   
-
-  InnerAutoTraceProperty=super( AutoTraceProperty )
-  
-  @TimerImplement( InnerAutoTraceProperty , 'ProcAccessTime' )
+  @TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
   def ImageInputHandler( self ):
     print "Entry..."
 
-  @TimerImplement( self , 'ProcAccessTime' )
+  @TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
   def ImageOutputHandler( self ):
     print "Entry..."
 
-  @TimerImplement( self , 'ProcAccessTime' )
+  @TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
   def HexNumberHandler( self  ):
     print "Entry..."
 
-  @TimerImplement( self , 'ProcAccessTime' )
+  @TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
   def AngleNumberHandler( self ):
     print "Entry..."
 
-  @TimerImplement( self , 'ProcAccessTime' )
+  @TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
   def ImageInputStringHandler( self ):
     print "Entry..."
   
