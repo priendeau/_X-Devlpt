@@ -72,8 +72,13 @@ class DecoratorAutotrace:
               if not hasattr( ClassName, ItemKeyName ):
                 setattr( ClassName, ItemKeyName, kwargs[ItemKeyName] )
             else:
-              if not hasattr( getattr( ClassName,ShelveObject ), ItemKeyName ):
-                setattr( getattr( ClassName,ShelveObject ), ItemKeyName, kwargs[ItemKeyName] )
+              if TypeObj == None:
+                if not hasattr( getattr( ClassName,ShelveObject ), ItemKeyName ):
+                  setattr( getattr( ClassName,ShelveObject ), ItemKeyName, kwargs[ItemKeyName] )
+              else:
+                if type(TypeObj) == type(dict()):
+                  if not ItemKeyName in getattr( ClassName,ShelveObject ).keys():
+                    
           func( *args, **kwargs )
         return inner
     return decorator
