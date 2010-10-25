@@ -157,6 +157,17 @@ class AutoTraceFactory( object ):
 
 
 class AutoTraceProperty( object ):
+
+
+  Register=[ 'ImageInputHandler', 'ImageOutputHandler','HexNumberHandler','AngleNumberHandler','ImageInputStringHandler' ]
+  
+  class Register( Warning ):
+      MsgShow='Raised a %s %s, Function %s not inside Register'
+      def __init__( self, value ):
+        if not value in ServerImplement.Register:
+          Warning.__init__( self, self.MsgShow % ( self.__class__.__name__, Warning.__name__, value ) )
+        else:
+          pass
   
   @DecoratorAutotrace.TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
   def ImageInputHandler( self ):
