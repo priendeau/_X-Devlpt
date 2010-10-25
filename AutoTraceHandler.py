@@ -55,6 +55,28 @@ class DecoratorAutotrace:
           func( *args, **kwargs )
         return inner
     return decorator
+
+  @staticmethod
+  def ParseTheKargs( ClassName,  ShelveObject ):
+    
+    """
+    This Decorator Will:
+    - Create a variable funcName being assigned automatically to funcName the FunctionName
+
+    The marshaller computes a key from function arguments
+    """
+    def decorator(func):
+        def inner(*args, **kwargs):
+          for ItemKeyName in kwargs.keys():
+            if ShelveObject == None:
+              if not hasattr( ClassName, ItemKeyName ):
+                setattr( ClassName, ItemKeyName, kwargs[ItemKeyName] )
+            else:
+              if not hasattr( getattr( ClassName,ShelveObject ), ItemKeyName ):
+                setattr( getattr( ClassName,ShelveObject ), ItemKeyName, kwargs[ItemKeyName] )
+          func( *args, **kwargs )
+        return inner
+    return decorator
   
 class AutoTraceFactory( object ):
   DictReference={ 'name':'dict',
@@ -142,6 +164,10 @@ class AutoTraceProperty( object ):
   @DecoratorAutotrace.TimerImplement( AutoTraceFactory , 'ProcAccessTime' )
   def ImageInputStringHandler( self ):
     print "Entry..."
+
+class AutotraceHandler():
+
+  def __init__( self ):
 
 
 if __name__.__eq__( '__main__' ):
