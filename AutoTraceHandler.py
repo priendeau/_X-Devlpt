@@ -40,6 +40,12 @@ class DecoratorAutotrace:
   DictReference={
     'Error':{
       'Handler':False, 'Name':[ None ] } }
+
+  @staticmethod
+  def ImplementError( ErrorName ):
+    self.DictReferencep[ 'Error' ][ 'Handler' ]= True
+    self.DictReferencep[ 'Name' ][ 'Handler' ]=ErrorName
+    
   
   @staticmethod
   def TimerImplement( ClassName,  AttrNameProcHwnd ):
