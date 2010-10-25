@@ -75,10 +75,14 @@ class DecoratorAutotrace:
               if TypeObj == None:
                 if not hasattr( getattr( ClassName,ShelveObject ), ItemKeyName ):
                   setattr( getattr( ClassName,ShelveObject ), ItemKeyName, kwargs[ItemKeyName] )
+                else:
+                  setattr( getattr( ClassName,ShelveObject ), ItemKeyName, kwargs[ItemKeyName] )
               else:
                 if type(TypeObj) == type(dict()):
                   if not ItemKeyName in getattr( ClassName,ShelveObject ).keys():
-                    
+                    setattr( ClassName,ShelveObject,  { ItemKeyName:kwargs[ItemKeyName] } )
+                  else:
+                    setattr( ClassName,ShelveObject, { ItemKeyName:kwargs[ItemKeyName] } )
           func( *args, **kwargs )
         return inner
     return decorator
@@ -172,8 +176,9 @@ class AutoTraceProperty( object ):
 
 class AutotraceHandler():
 
-  @DecoratorAutotrace.ParseTheKargs( AutoTraceFactory , None )
+  @DecoratorAutotrace.ParseTheKargs( AutoTraceFactory , None, None  )
   def __init__( self ):
+    print "Creating Instance %s" % ( self.__class__.__name__ )
 
 
 if __name__.__eq__( '__main__' ):
