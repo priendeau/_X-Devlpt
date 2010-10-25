@@ -37,8 +37,8 @@ def ImageInputString( cls ):
 
 class DecoratorAutotrace:
   
-  @classmethod
-  def TimerImplement( cls,  AttrNameProcHwnd ):
+  @staticmethod
+  def TimerImplement( ClassName,  AttrNameProcHwnd ):
     
     """
     This Decorator Will:
@@ -48,10 +48,10 @@ class DecoratorAutotrace:
     """
     def decorator(func):
         def inner(*args, **kwargs):
-          if not func.__name__ in getattr( cls.__class__, AttrNameProcHwnd ).keys():
-            getattr( cls.__class__, AttrNameProcHwnd )[func.__name__]=list()
+          if not func.__name__ in getattr( ClassName , AttrNameProcHwnd ).keys():
+            getattr( ClassName, AttrNameProcHwnd )[func.__name__]=list()
           else:
-            getattr( cls.__class__, AttrNameProcHwnd )[func.__name__].append( time.time() )
+            getattr( ClassName, AttrNameProcHwnd )[func.__name__].append( time.time() )
           func( *args, **kwargs )
         return inner
     return decorator
