@@ -36,6 +36,10 @@ def ImageInputString( cls ):
   cls.ImageInputStringHandler( cls )
 
 class DecoratorAutotrace:
+
+  DictReference={
+    'Error':{
+      'Handler':False, 'Name':[ None ] } }
   
   @staticmethod
   def TimerImplement( ClassName,  AttrNameProcHwnd ):
