@@ -38,6 +38,13 @@ class DecoratorSQ:
     return self.DictAttributeStatement
 
   @staticmethod
+  def CompareAttributeStateWritable( self, AttrStatement=2 ):
+    self.OldDictReferenceValue=DictReference[self.ParentNode][self.ChildNode]
+    DictReference[self.ParentNode][self.ChildNode]=self.OldDictReferenceValue
+    self.DictAttributeStatement=self.AttributeState[AttrStatement]
+    
+  
+  @staticmethod
   def getDictReferenceValue( self, value ):
     if len( value ) == 1:
       self.DictReferenceValue=value
@@ -49,9 +56,7 @@ class DecoratorSQ:
     if DictReference[self.ParentNode][self.ChildNode] == self.DictReferenceValue:
       self.DictAttributeStatement=self.AttributeState[1]
     else:
-      self.OldDictReferenceValue=DictReference[self.ParentNode][self.ChildNode]
-      DictReference[self.ParentNode][self.ChildNode]=self.OldDictReferenceValue
-      self.DictAttributeStatement=self.AttributeState[2]
+      self.CompareAttributeStateWritable()
 
   PropertyWriteDR=property( getDictReferenceValue, setDictReferenceValue )
 
