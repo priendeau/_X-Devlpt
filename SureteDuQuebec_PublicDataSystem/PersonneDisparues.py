@@ -216,6 +216,6 @@ class PersonnesDisparues( object ):
   def InitCall( self ):
     return True
     
-  @DecoratorSQ.ParseTheKargs( DictProperty , None, None )
+  @DecoratorSQ.ParseTheKargs( Factory , None, None )
   def __init__( self, **Kargs ):
     self.InitCall( )
