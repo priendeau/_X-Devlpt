@@ -198,6 +198,7 @@ class DictPropertyFactory( object ):
     self.RootClassName, self.RootClassNode = value
     self.RootNode=getattr( self.RootClassName, self.RootClassNode )
   
+  PropertyRootNode=property( GetRootNode, SetRootNode)
   
   ParentKey=None
   @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
@@ -209,6 +210,8 @@ class DictPropertyFactory( object ):
     Value = value
     self.ParentKey=self.DictReferences[ Value ]
 
+  PropertyParentKey=property( GetParentKey, SetParentKey)
+  
   ChildKey=None
   @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
   def GetChildKey( self ):
@@ -219,6 +222,8 @@ class DictPropertyFactory( object ):
     Value = value
     self.ChildKey=self.DictReferences[ Value ]
 
+  PropertyChildKey=property( GetChildKey, SetChildKey )
+  
 class PersonnesDisparues( object ):
 
   Factory=DictPropertyFactory()
