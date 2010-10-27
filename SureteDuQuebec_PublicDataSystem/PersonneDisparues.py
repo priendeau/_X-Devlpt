@@ -32,8 +32,11 @@ class DecoratorSQ:
   @classmethod
   def InnerDeleteKeyName( ListName ):
     for itemKey in ListName:
-      getattr( __builtins__, 'del')( itemKey )
-
+      getattr( __builtins__, 'eval')( "del %s" % itemKey )
+      if itemKey in DecoratorSQ.ReferenceTransfert.keys():
+        setattr( __builtins__, itemKey, DecoratorSQ.ReferenceTransfert[itemKey] )
+        del DecoratorSQ.ReferenceTransfert[itemKey]
+        
 
   @staticmethod
   def ImplementError( ErrorName ):
