@@ -21,11 +21,16 @@ class DecoratorSQ:
       print "Module Name %s not in memory, importing-it" % ( ItemModuleName )
       getattr( defaultNodeImpl, defaultImporter )( ItemModuleName , {}, {}, DefaultListFunc , -1 )
 
+  @classmethod
+  def InnerCreateKeyName( ListName ):
+    for itemKey in ListName:
+      setattr( __builtins__,  itemKey, itemKey )
+
+
   @staticmethod
   def ImplementError( ErrorName ):
     self.DictReferencep[ 'Error' ][ 'Handler' ]= True
     self.DictReferencep[ 'Name' ][ 'Handler' ]=ErrorName
-
 
   @staticmethod
   def TimerImplement( ClassName,  AttrNameProcHwnd ):
@@ -124,6 +129,19 @@ class DecoratorSQ:
         return inner
     return decorator
 
+  @staticmethod
+  def GlobalKeyNameAssertion( ListKey ):
+    
+    """
+    """
+    def decorator(func):
+        def inner(*args, **kwargs):
+          DecoratorSQ.InnerCreateKeyName( ListKey )
+          func( *args, **kwargs )
+        return inner
+    return decorator
+
+
 """
 
   This structure is intended for the Public Access of Visual Information, to provide tools to
@@ -145,9 +163,7 @@ class DecoratorSQ:
 
 __KeyDictAttribute__=[ 'Object','url','web','image', 'link' ]
 
-def CreateKeyName( ListName ):
-  for itemKey in __KeyDictAttribute__:
-    setattr( __builtins__,  itemKey, itemKey )
+
 
 CreateKeyName( __KeyDictAttribute__ )
 
