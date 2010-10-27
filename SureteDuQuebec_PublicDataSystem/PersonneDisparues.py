@@ -30,9 +30,9 @@ class DecoratorSQ:
       setattr( __builtins__,  itemKey, itemKey )
 
   @classmethod
-  def InnerCreateKeyName( ListName ):
+  def InnerDeleteKeyName( ListName ):
     for itemKey in ListName:
-      setattr( __builtins__,  itemKey, itemKey )
+      getattr( __builtins__, 'del')( itemKey )
 
 
   @staticmethod
