@@ -3,22 +3,26 @@
 class DecoratorSQ:
 
   DictReference={
-    'GlobalKeyNameAssertion':[ 'overwritting':True ]
+    'GlobalKeyNameAssertion':[ 'overwritting':True, 'error':DecoratorSQ.WarnAttributeOverwriting ]
     'Error':{
       'Handler':False,
       'Name':[ None ] } }
 
   ReferenceTransfert={ }
 
+    
+  class ExceptionOverwritingNotAllowed( Exception ):
+    MsgShow='Base Classe Variable/Attribute implicitly claimed to not overwrite variable, with transfert techniques, while using Func: %s. '
+    def __init__(self, value):
+      Exception.__init__( self, self.MsgShow % ( value ) )
+
   class WarnAttributeOverwriting( Warning ):
     MsgShow='Raised an Class Exception' % WarnAttributeOverwriting.__name__
     def __init__(self, value):
-      Warning.__init__( self, self.MsgShow % ( value ) )
-    
-    class ExceptionOverwritingNotAllowed( Exception ):
-      MsgShow='Base Classe Variable/Attribute implicitly claimed to not overwrite variable, with transfert techniques, while using Func: %s. '
-      def __init__(self, value):
-        Exception.__init__( self, self.MsgShow % ( value ) )
+      try:
+        raise DecoratorSQ.ExceptionOverwritingNotAllowed
+      except DecoratorSQ.ExceptionOverwritingNotAllowed:
+        Warning.__init__( self, self.MsgShow % ( value ) )
 
   AttributeState=['NotWrited','Same','Writed']
   DictReferenceValue=None
