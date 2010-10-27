@@ -18,6 +18,7 @@ class DecoratorSQ:
   DictReferenceValue=None
   ParentNode=None
   ChildNode=None
+
   @staticmethod
   def getDictReference( self ):
     return self.DictReferenceValue
@@ -32,11 +33,9 @@ class DecoratorSQ:
   OldDictReferenceValue=None
   DictReferenceValue=None
   DictAttributeStatement=None
+
   def getDictReferenceValue( self ):
-    if self.OldDictReferenceValue == self.DictReferenceValue:
-      return True
-    else
-      return False
+    return self.DictAttributeStatement
 
   @staticmethod
   def getDictReferenceValue( self, value ):
