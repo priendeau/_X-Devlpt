@@ -20,7 +20,7 @@ class DecoratorSQ:
     MsgShow='Raised an Class Exception' % WarnAttributeOverwriting.__name__
     def __init__(self, value):
       try:
-        raise DecoratorSQ.ExceptionOverwritingNotAllowed
+        raise DecoratorSQ.ExceptionOverwritingNotAllowed, value
       except DecoratorSQ.ExceptionOverwritingNotAllowed:
         Warning.__init__( self, self.MsgShow % ( value ) )
 
