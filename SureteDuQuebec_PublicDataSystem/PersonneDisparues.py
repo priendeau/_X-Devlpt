@@ -180,8 +180,14 @@ __KeyDictAttribute__=[ 'Object','url','web','image', 'link' ]
 
 
 
-class DictProperty( object ):
+class DictPropertyFactory( object ):
 
+  ASdQc={ 'Object':pynav.Pynav(),
+          'url':'http://www.sq.gouv.qc.ca/personnes-disparues/personnes-disparues-surete-du-quebec.jsp#pageDemandee=1',
+          'web':{
+            'image':None,
+            'link':None } }
+  
   ParentKey=None
   @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
   def GetParentKey( self ):
@@ -190,7 +196,7 @@ class DictProperty( object ):
   @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
   def SetParentKey( self, value ):
     Value = value
-    self.RootKey=self.DictReferences[ Value ]
+    self.ParentKey=self.DictReferences[ Value ]
 
   ChildKey=None
   @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
@@ -204,11 +210,7 @@ class DictProperty( object ):
 
 class PersonnesDisparues( object ):
 
-  ASdQc={ 'Object':pynav.Pynav(),
-          'url':'http://www.sq.gouv.qc.ca/personnes-disparues/personnes-disparues-surete-du-quebec.jsp#pageDemandee=1',
-          'web':{
-            'image':None,
-            'link':None } }
+  Factory=DictPropertyFactory()
 
   @DecoratorSQ.InstanceFuncMessage( "Creating Instance" )
   def InitCall( self ):
