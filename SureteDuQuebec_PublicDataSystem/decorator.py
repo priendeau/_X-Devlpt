@@ -5,14 +5,23 @@ class DecoratorSQ:
   DictReference={
     'GlobalKeyNameAssertion':[ 'overwritting':True ]
     'Error':{
-      'Handler':False, 'Name':[ None ] } }
+      'Handler':False,
+      'Name':[ None ] } }
 
   ReferenceTransfert={ }
 
   class WarnAttributeOverwriting( Warning ):
 
     class ExceptionOverwritingNotAllowed( Exception ):
-      
+
+  DictReferenceValue=None  
+  def getDictReference( self ):
+    return self.DictReferenceValue
+
+  def setDictReference( self, value ):
+    self.ParentNode, self.ChildNode = value
+    self.DictReferenceValue=DictReference[self.ParentNode][self.ChildNode]
+    
 
   @classmethod
   def InnerVariableFromFuncModule( ModuleImport, defaultNodeImpl=__builtins__ ):
