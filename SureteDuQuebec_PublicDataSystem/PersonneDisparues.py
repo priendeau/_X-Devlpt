@@ -19,6 +19,9 @@ from SureteDuQuebec_PublicDataSystem.decorator import DecoratorSQ
   and being meshed with meshPy to provide structural rotation form and valid images deformation re-rendering in
   3d world....
 
+  And All the information will be adapted to mahotas or a.k.a sub-branch of Montreal-Olympic-Stadium-kml-python
+  with similar property of looking for mapped information and using a mesh it can discover a image with
+  similar meshing, thru mahotas-> morph module... 
   
 """
 
