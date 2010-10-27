@@ -15,10 +15,12 @@ class DecoratorSQ:
     MsgShow='Base Classe Variable/Attribute implicitly claimed to not overwrite variable, with transfert techniques, while using Func: %s. '
     ExceptionValue=None
     def __init__(self, value):
+      if 
       Exception.__init__( self, self.MsgShow % ( self.ExceptionValue ) )
 
   class WarnAttributeOverwriting( Warning ):
     MsgShow='Raised an Class Exception %s ' % WarnAttributeOverwriting.__name__
+    WarnValue=None
     def __init__(self, value):
       if len( value ) == 1:
         self.WarnValue=value
