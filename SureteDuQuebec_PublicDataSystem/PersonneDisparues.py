@@ -21,7 +21,12 @@ from SureteDuQuebec_PublicDataSystem.decorator import DecoratorSQ
 
   And All the information will be adapted to mahotas or a.k.a sub-branch of Montreal-Olympic-Stadium-kml-python
   with similar property of looking for mapped information and using a mesh it can discover a image with
-  similar meshing, thru mahotas-> morph module... 
+  similar meshing, thru mahotas-> morph module...
+
+  And tiny theorical system... Implanting FFVideo from _X-Devlpt ( FFVideo_test_image_wavelet_prg from VideoProject branch ),
+  can explicitly convert reserched-subject into valid envirronment lookup if people are participating to
+  "a Video Saga"... The result between if they are hiding because they are too shy or ashamedly dead or their
+  video-show... It's not my domain...
   
 """
 
