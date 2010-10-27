@@ -14,14 +14,19 @@ class DecoratorSQ:
 
     class ExceptionOverwritingNotAllowed( Exception ):
 
-  DictReferenceValue=None  
+  DictReferenceValue=None
+  ParentNode=None
+  ChildNode=None
+  @staticmethod
   def getDictReference( self ):
     return self.DictReferenceValue
 
+  @staticmethod
   def setDictReference( self, value ):
     self.ParentNode, self.ChildNode = value
     self.DictReferenceValue=DictReference[self.ParentNode][self.ChildNode]
     
+  PropertyDR=property( getDictReference, setDictReference )
 
   @classmethod
   def InnerVariableFromFuncModule( ModuleImport, defaultNodeImpl=__builtins__ ):
