@@ -19,10 +19,17 @@ class DecoratorSQ:
   class WarnAttributeOverwriting( Warning ):
     MsgShow='Raised an Class Exception' % WarnAttributeOverwriting.__name__
     def __init__(self, value):
+      if len( value ) == 1:
+        self.WarnValue=value
+        DecoratorSQ.ExceptionOverwritingNotAllowed.ExceptionValue='None'
+      if len( value ) == 2:
+        self.WarnValue, DecoratorSQ.ExceptionOverwritingNotAllowed.ExceptionValue = value
       try:
-        raise DecoratorSQ.ExceptionOverwritingNotAllowed, value
+        raise DecoratorSQ.ExceptionOverwritingNotAllowed, DecoratorSQ.ExceptionOverwritingNotAllowed.ExceptionValue
       except DecoratorSQ.ExceptionOverwritingNotAllowed:
         Warning.__init__( self, self.MsgShow % ( value ) )
+      else:
+        pass 
 
   AttributeState=['NotWrited','Same','Writed']
   DictReferenceValue=None
