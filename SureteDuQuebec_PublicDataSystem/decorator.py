@@ -3,7 +3,7 @@
 class DecoratorSQ:
 
   DictReference={
-    'GlobalKeyNameAssertion':[ 'overwritting':True, 'error':DecoratorSQ.WarnAttributeOverwriting ]
+    'GlobalKeyNameAssertion':{ 'overwritting':True, 'error':DecoratorSQ.WarnAttributeOverwriting },
     'Error':{
       'Handler':False,
       'Name':[ None ] } }
