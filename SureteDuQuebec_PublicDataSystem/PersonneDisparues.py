@@ -29,6 +29,9 @@ class DecoratorSQ:
         DecoratorSQ.ReferenceTransfert[itemKey]=getattr( __builtins__, 'eval')( itemKey )
       setattr( __builtins__,  itemKey, itemKey )
 
+  ### Theorical method, it restore-back the global variable
+  ### once the function is quitting, so they can virtually 
+  ### uses any key with .
   @classmethod
   def InnerDeleteKeyName( ListName ):
     for itemKey in ListName:
