@@ -188,6 +188,10 @@ class DictPropertyFactory( object ):
             'image':None,
             'link':None } }
 
+  IntNodeLevel=0
+  CurrentNodeLevel=None
+  TreeNode=[ ] 
+
   RootNode=None
   @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
   def GetRootNode( self ):
