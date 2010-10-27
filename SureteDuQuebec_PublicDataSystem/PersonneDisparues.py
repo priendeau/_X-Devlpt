@@ -182,21 +182,24 @@ __KeyDictAttribute__=[ 'Object','url','web','image', 'link' ]
 
 class DictProperty( object ):
 
-  @DecoratorSQ.
+  @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
   def GetParentKey( self ):
     return self.RootKey
 
+  @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
   def SetParentKey( self, value ):
     Value = value
     self.RootKey=self.DictReferences[ Value ]
 
+  @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
   def GetChildKey( self ):
     return self.RootKey
 
+  @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
   def SetChildKey( self, value ):
     Value = value
     self.RootKey=self.DictReferences[ Value ]
-    
+
 class PersonnesDisparues( object ):
 
   ASdQc={ Object:pynav.Pynav(),
