@@ -7,6 +7,7 @@ class DecoratorSQ:
     'Error':{
       'Handler':False, 'Name':[ None ] } }
 
+  ReferenceTransfert={ }
 
   @classmethod
   def InnerVariableFromFuncModule( ModuleImport, defaultNodeImpl=__builtins__ ):
@@ -20,6 +21,13 @@ class DecoratorSQ:
     if not ModuleImportName in vars():
       print "Module Name %s not in memory, importing-it" % ( ItemModuleName )
       getattr( defaultNodeImpl, defaultImporter )( ItemModuleName , {}, {}, DefaultListFunc , -1 )
+
+  @classmethod
+  def InnerCreateKeyName( ListName ):
+    for itemKey in ListName:
+      if itemKey in vars():
+        DecoratorSQ.ReferenceTransfert[itemKey]=getattr( __builtins__, 'eval')( itemKey )
+      setattr( __builtins__,  itemKey, itemKey )
 
   @classmethod
   def InnerCreateKeyName( ListName ):
