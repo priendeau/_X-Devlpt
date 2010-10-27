@@ -187,6 +187,17 @@ class DictPropertyFactory( object ):
           'web':{
             'image':None,
             'link':None } }
+
+  RootNode=None
+  @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
+  def GetRootNode( self ):
+    return self.ParentKey
+
+  @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
+  def SetRootNode( self, value ):
+    Value = value
+    self.ParentKey=self.DictReferences[ Value ]
+  
   
   ParentKey=None
   @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
@@ -201,7 +212,7 @@ class DictPropertyFactory( object ):
   ChildKey=None
   @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
   def GetChildKey( self ):
-    return self.ChildKey
+    return [self.ChildKey]
 
   @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
   def SetChildKey( self, value ):
