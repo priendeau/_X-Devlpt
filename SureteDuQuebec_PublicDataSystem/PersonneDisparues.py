@@ -202,11 +202,11 @@ class DictProperty( object ):
 
 class PersonnesDisparues( object ):
 
-  ASdQc={ Object:pynav.Pynav(),
-          url:'http://www.sq.gouv.qc.ca/personnes-disparues/personnes-disparues-surete-du-quebec.jsp#pageDemandee=1',
-          web:{
+  ASdQc={ 'Object':pynav.Pynav(),
+          'url':'http://www.sq.gouv.qc.ca/personnes-disparues/personnes-disparues-surete-du-quebec.jsp#pageDemandee=1',
+          'web':{
             'image':None,
-            link:None } }
+            'link':None } }
 
   @DecoratorSQ.InstanceFuncMessage( "Creating Instance" )
   def InitCall( self ):
