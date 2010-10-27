@@ -14,6 +14,7 @@ class DecoratorSQ:
 
     class ExceptionOverwritingNotAllowed( Exception ):
 
+  AttributeState=['NotWrited','Same','Writed']
   DictReferenceValue=None
   ParentNode=None
   ChildNode=None
@@ -30,6 +31,7 @@ class DecoratorSQ:
 
   OldDictReferenceValue=None
   DictReferenceValue=None
+  DictAttributeStatement=None
   def getDictReferenceValue( self ):
     if self.OldDictReferenceValue == self.DictReferenceValue:
       return True
@@ -44,8 +46,13 @@ class DecoratorSQ:
       self.ChildNode, self.DictReferenceValue = value
     elif len( value ) == 3:
       self.ParentNode, self.ChildNode, self.DictReferenceValue = value
-    self.OldDictReferenceValue=DictReference[self.ParentNode][self.ChildNode]
-    DictReference[self.ParentNode][self.ChildNode]=self.OldDictReferenceValue
+
+    if DictReference[self.ParentNode][self.ChildNode] == self.DictReferenceValue:
+      self.DictAttributeStatement=self.AttributeState[1]
+    else:
+      self.OldDictReferenceValue=DictReference[self.ParentNode][self.ChildNode]
+      DictReference[self.ParentNode][self.ChildNode]=self.OldDictReferenceValue
+      self.DictAttributeStatement=self.AttributeState[2]
 
   PropertyWriteDR=property( getDictReferenceValue, setDictReferenceValue )
 
