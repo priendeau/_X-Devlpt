@@ -191,12 +191,12 @@ class DictPropertyFactory( object ):
   RootNode=None
   @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
   def GetRootNode( self ):
-    return self.ParentKey
+    return self.RootNode
 
   @DecoratorSQ.GlobalKeyNameAssertion( __KeyDictAttribute__ )
   def SetRootNode( self, value ):
-    Value = value
-    self.ParentKey=self.DictReferences[ Value ]
+    self.RootClassName, self.RootClassNode = value
+    self.RootNode=getattr( self.RootClassName, self.RootClassNode )
   
   
   ParentKey=None
