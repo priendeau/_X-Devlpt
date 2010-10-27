@@ -138,6 +138,7 @@ class DecoratorSQ:
         def inner(*args, **kwargs):
           DecoratorSQ.InnerCreateKeyName( ListKey )
           func( *args, **kwargs )
+          DecoratorSQ.InnerDeleteKeyName( ListKey )
         return inner
     return decorator
 
