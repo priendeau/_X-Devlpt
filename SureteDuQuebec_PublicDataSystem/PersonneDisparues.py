@@ -180,11 +180,9 @@ __KeyDictAttribute__=[ 'Object','url','web','image', 'link' ]
 
 
 
-CreateKeyName( __KeyDictAttribute__ )
-
-
 class DictProperty( object ):
 
+  @DecoratorSQ.
   def GetParentKey( self ):
     return self.RootKey
 
