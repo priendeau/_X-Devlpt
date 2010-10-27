@@ -26,7 +26,22 @@ class DecoratorSQ:
     self.ParentNode, self.ChildNode = value
     self.DictReferenceValue=DictReference[self.ParentNode][self.ChildNode]
     
-  PropertyDR=property( getDictReference, setDictReference )
+  PropertyReadDR=property( getDictReference, setDictReference )
+
+  OldDictReferenceValue=None
+  DictReferenceValue=None
+  def getDictReferenceValue( self ):
+    if self.OldDictReferenceValue == self.DictReferenceValue:
+      return True
+    else
+      return False
+
+  @staticmethod
+  def getDictReferenceValue( self, value ):
+    self.ParentNode, self.ChildNode = value
+    self.DictReferenceValue=DictReference[self.ParentNode][self.ChildNode]
+
+  PropertyWriteDR=property( getDictReferenceValue, setDictReferenceValue )
 
   @classmethod
   def InnerVariableFromFuncModule( ModuleImport, defaultNodeImpl=__builtins__ ):
