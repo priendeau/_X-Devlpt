@@ -38,8 +38,14 @@ class DecoratorSQ:
 
   @staticmethod
   def getDictReferenceValue( self, value ):
-    self.ParentNode, self.ChildNode = value
-    self.DictReferenceValue=DictReference[self.ParentNode][self.ChildNode]
+    if len( value ) == 1:
+      self.DictReferenceValue=value
+    elif len( value ) == 2:
+      self.ChildNode, self.DictReferenceValue = value
+    elif len( value ) == 3:
+      self.ParentNode, self.ChildNode, self.DictReferenceValue = value
+    self.OldDictReferenceValue=DictReference[self.ParentNode][self.ChildNode]
+    DictReference[self.ParentNode][self.ChildNode]=self.OldDictReferenceValue
 
   PropertyWriteDR=property( getDictReferenceValue, setDictReferenceValue )
 
